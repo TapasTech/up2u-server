@@ -1,0 +1,22 @@
+{
+  "name": "up2u-server",
+  "version": "0.0.0",
+  "description": "Node.js server for up2u",
+  "main": "index.js",
+  "scripts": {
+    "start": "node lib",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "up2u"
+  ],
+  "author": "Gerald <i@gerald.top>",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^1.2.4",
+    "koa-bodyparser": "^2.2.0",
+    "koa-router": "^5.4.0",
+    "sequelize": "^3.24.3",
+    "sqlite3": "^3.1.6"
+  }
+}
