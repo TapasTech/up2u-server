@@ -1,62 +1,31 @@
 const models = require('../lib/models');
 
-const createNode = models.Node.objects.create;
-
 models.sync({force: true})
-.then(() => createNode({
-  type: 'text',
-  content: {
-    data: 'Hi there!',
-  },
-}))
-.then(node => createNode({
-  type: 'link',
-  content: {
-    data: 'Welcome to China!',
-    link: 'http://www.baidu.com',
-  },
-  parent: node.id,
-}))
-.then(node => createNode({
-  type: 'text',
-  content: {
-    data: 'Do you like it?',
-  },
-  parent: node.id,
-}))
-.then(node => createNode({
-  type: 'choices',
-  parent: node.id,
-}))
-.then(node => {
-  return createNode({
-    type: 'choice',
+.then(() => Promise.all([
+  models.Block.create({
+    name: 'hi',
     content: {
-      title: 'Yes',
-      data: 'Yes, I like it.',
+      data: 'Hi there!',
     },
-    parent: node.id,
+  }),
+  models.Block.create({
+    name: 'fuck',
+    content: {
+      data: 'What the fuck!',
+    },
+  }),
+]))
+.then(blocks => {
+  return models.Entry.create({
+    name: 'root',
+    data: blocks.map(block => block.id),
   })
-  .then(node => createNode({
-    type: 'text',
-    content: {
-      data: 'OK, thank you.',
-    },
-    parent: node.id,
-  }))
-  .then(() => createNode({
-    type: 'choice',
-    content: {
-      title: 'No',
-      data: 'No, show me something else.',
-    },
-    parent: node.id,
-  }))
-  .then(node => createNode({
-    type: 'text',
-    content: {
-      data: 'There is nothing else. You have to like it.',
-    },
-    parent: node.id,
-  }));
-});
+  .then(entry => ({entry, blocks}));
+})
+.then(({entry, blocks}) => entry.setBlocks(blocks).then(() => entry))
+.then(entry => models.Entry.findById(entry.id))
+.then(entry => {
+  console.log(JSON.parse(JSON.stringify(entry)));
+  return entry.getBlocks();
+})
+.then(items => console.log(JSON.parse(JSON.stringify(items))));
