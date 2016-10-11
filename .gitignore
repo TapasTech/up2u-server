@@ -2,3 +2,4 @@ node_modules
 /static
 *.sqlite3
 *.log
+app.json

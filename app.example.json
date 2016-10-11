@@ -1,0 +1,8 @@
+{
+  "name": "up2u",
+  "script": "lib",
+  "env": {
+    "PORT": 4004,
+    "HOST": "localhost"
+  }
+}
